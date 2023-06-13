@@ -12,6 +12,7 @@
 	$koneksi = mysqli_connect($server,$user,$password) or die("Koneksi Server Gagal!");
 	$db = mysqli_select_db($koneksi, $database) or die("Gagal Pilih Database!");
 
+
 // ====================== FUNCTION ======================
 function setAlert($title='', $text='', $type='', $buttons='') {
 	$_SESSION["alert"]["title"]		= $title;
@@ -60,11 +61,15 @@ function checkLoginAtLogin() {
 	}
 }
 
-function checkUserRole(){
+function checkUserRole($id_role){
 	//$user = 
-	if (($_SESSION['idrole'] != 1 )) {
+	if (($_SESSION['id_role'] != 1 )) {
 		setAlert("Akses ditolak!", "Anda bukan admin!", "error");
 		header('Location: login.php');
+	}
+	else {
+		setAlert("Selamat Datang!", "Administrator", "success");
+		header('Location: index.php');
 	}
 }
 
@@ -310,4 +315,12 @@ function tambahUser($data) {
 	mysqli_query($koneksi, "INSERT INTO tb_user VALUES ('', '$namalengkap', '$username', '$email', '$epassword','$photo_profile')");
 	return mysqli_affected_rows($koneksi);
 
+}
+//ambil id
+function idrole($id_role) {
+	global $koneksi;
+	if (isset($_SESSION['id_role'])) {
+		$id_user = $_SESSION['id_role'];
+		return mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT * FROM tb_user WHERE id_role = '$id_role'"));
+	}
 }
