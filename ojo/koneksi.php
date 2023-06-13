@@ -316,7 +316,6 @@ function tambahUser($data) {
 	return mysqli_affected_rows($koneksi);
 
 }
-//ambil id
 function idrole($id_role) {
 	global $koneksi;
 	if (isset($_SESSION['id_role'])) {

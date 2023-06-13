@@ -13,7 +13,7 @@
   				'id_user' => $data['id_user'],
   				'username' => $data['username']
   			];
-  			header("Location: ../index.php");
+  			header("Location: ../user/index.php");
   		} else {
 			setAlert("Gagal login!", "Password yang anda masukkan salah!", "error");
 			header("Location: login.php");

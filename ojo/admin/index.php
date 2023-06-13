@@ -1,7 +1,7 @@
 <?php 
   require '../koneksi.php';
   checkLogin();
-  checkUserRole($id_role);
+ // checkUserRole($id_role);
   $jumlah_film = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT count(id_film) as jumlah_film FROM tb_film"));
   $jumlah_film = $jumlah_film['jumlah_film'];
 

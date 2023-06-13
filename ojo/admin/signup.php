@@ -61,7 +61,6 @@ setalert("Registrasi Berhasil" , "Data Berhasil Ditambahkan!" , "success");
 		<div class="row justify-content-center">
 			<div class="col-lg-4 mx-5 py-4 px-5 text-dark rounded border border-dark" style="background-color: rgba(180,190,196,.6);">
 				<h2 class="text-center">Selamat Datang</h2>
-				<h3 class="text-center">Administrator</h3>
 				<form method="post">
 					<div class="form-group">
 						<label for="namalengkap"><i class="fas fa-fw fa-user-circle"></i> Nama lengkap</label>

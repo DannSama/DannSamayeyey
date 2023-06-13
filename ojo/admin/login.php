@@ -1,43 +1,48 @@
 <?php 
   require '../koneksi.php';
   checkLoginAtLogin();
+  	session_start();
 
-  if (isset($_POST['btnLogin'])) {
-  	$username = htmlspecialchars($_POST['username']);
-  	$password = htmlspecialchars($_POST['password']);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	$username = $_POST['username'];
+	$password = $_POST['password'];
 
-  	$checkUsername = mysqli_query($koneksi, "SELECT * FROM tb_user WHERE username = '$username'");
-	$checkrole = mysqli_query($koneksi, "SELECT id_role FROM tb_user WHERE username = '$username'");
-	//$row = mysqli_fetch_assoc($checkrole);
-  	if ($data = mysqli_fetch_array($checkUsername)) {
-  		if (password_verify($password, $data['password'])) {
-  			$_SESSION = [
-  				'id_user' => $data['id_user'],
-  				'username' => $data['username'],
-				//'id_role' => $data['id_role']
-  			];
-  			//header("Location: index.php");
-			  if ($data = mysqli_fetch_assoc($checkrole)) {
-				$id_role = $row['id_role'];
-				// Compare the id_role value
-				if ($id_role != 1) {
-					setAlert("Akses ditolak!", "Login terlebih dahulu!", "error");
-					header('Location: login.php');
-				} elseif ($id_role) {
-					setAlert("Selamat Datang!", "Administrator", "success");
-					header('Location: index.php');
-  		} else {
+	$checkUsername = mysqli_query($koneksi, "SELECT * FROM tb_user WHERE username = '$username'");
+	
+	if (mysqli_num_rows($checkUsername) > 0) {
+		$data = mysqli_fetch_assoc($checkUsername);
+
+		if (password_verify($password, $data['password'])) {
+			$checkrole = mysqli_query($koneksi, "SELECT id_role FROM tb_user WHERE username = '$username'");
+			$row = mysqli_fetch_assoc($checkrole);
+			$id_role = $row['id_role'];
+
+			if ($id_role != 1) {
+				setAlert("Akses ditolak!", "Anda bukan admin!", "error");
+				header('Location: index.php');
+				exit();
+			} else {
+				$_SESSION['id_user'] = $data['id_user'];
+				$_SESSION['username'] = $data['username'];
+				$_SESSION['id_role'] = $data['id_role'];
+
+				setAlert("Selamat Datang!", "Administrator", "success");
+				header('Location: index.php');
+				exit();
+			}
+		} else {
 			setAlert("Gagal login!", "Password yang anda masukkan salah!", "error");
 			header("Location: login.php");
-	  	}
-  	}
-	 else {
+			exit();
+		}
+	} else {
 		setAlert("Gagal login!", "Username belum terdaftar!", "error");
 		header("Location: login.php");
-  	}
- }
+		exit();
+	}
 }
-  }
+
+
 ?>
 
 <!DOCTYPE html>
